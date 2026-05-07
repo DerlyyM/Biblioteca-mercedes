@@ -13,7 +13,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ route('books.index') }}">
-                <i class="bi bi-book"></i> Biblioteca Mercedes
+                <i class="bi bi-book"></i> Biblioteca Nuestra señora de las Mercedes
             </a>
 
             <div class="d-flex gap-2 align-items-center">
