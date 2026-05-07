@@ -22,27 +22,27 @@
                     <div class="row g-3">
                         <div class="col-md-12">
                             <label class="form-label">Título</label>
-                            <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
+                            <input type="text" name="title" class="form-control" value="{{ old('title') }}" minlength="4" maxlength="255" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Autor</label>
-                            <input type="text" name="author" class="form-control" value="{{ old('author') }}" required>
+                            <input type="text" name="author" class="form-control" value="{{ old('author') }}" minlength="4" maxlength="255" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Editorial</label>
-                            <input type="text" name="publisher" class="form-control" value="{{ old('publisher') }}" required>
+                            <input type="text" name="publisher" class="form-control" value="{{ old('publisher') }}" minlength="4" maxlength="255" required>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Año de Publicación</label>
-                            <input type="number" name="published_year" class="form-control" value="{{ old('published_year') }}" min="0" required>
+                            <input type="number" name="published_year" class="form-control" value="{{ old('published_year') }}" min="1000" max="9999" step="1" required>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Categoría</label>
-                            <input type="text" name="category" class="form-control" value="{{ old('category') }}" required>
+                            <input type="text" name="category" class="form-control" value="{{ old('category') }}" minlength="4" maxlength="255" required>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Cantidad (Stock)</label>
-                            <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}" min="0" required>
+                            <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}" min="0" step="1" required>
                         </div>
                     </div>
                     <div class="mt-4 border-top pt-3">

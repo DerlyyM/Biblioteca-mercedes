@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\User;
+use App\Notifications\NewBookCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Book;
+use Illuminate\Support\Facades\Notification;
 
 class BookController extends Controller
 {
@@ -60,15 +63,41 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'publisher' => 'required',
-            'published_year' => 'required|numeric',
-            'category' => 'required',
-            'stock' => 'required|numeric|min:0',
+            'title' => 'required|string|min:4|max:255',
+            'author' => 'required|string|min:4|max:255',
+            'publisher' => 'required|string|min:4|max:255',
+            'published_year' => 'required|integer|digits:4',
+            'category' => 'required|string|min:4|max:255',
+            'stock' => 'required|integer|min:0',
+        ], [
+            'title.required' => 'El título es obligatorio.',
+            'title.string' => 'El título debe ser texto.',
+            'title.min' => 'El título debe tener al menos 4 caracteres.',
+            'author.required' => 'El autor es obligatorio.',
+            'author.string' => 'El autor debe ser texto.',
+            'author.min' => 'El nombre del autor debe tener al menos 4 caracteres.',
+            'publisher.required' => 'La editorial es obligatoria.',
+            'publisher.string' => 'La editorial debe ser texto.',
+            'publisher.min' => 'La editorial debe tener al menos 4 caracteres.',
+            'published_year.required' => 'El año de publicación es obligatorio.',
+            'published_year.integer' => 'El año debe ser un número entero.',
+            'published_year.digits' => 'El año debe tener 4 dígitos.',
+            'category.required' => 'La categoría es obligatoria.',
+            'category.string' => 'La categoría debe ser texto.',
+            'category.min' => 'La categoría debe tener al menos 4 caracteres.',
+            'stock.required' => 'La cantidad disponible es obligatoria.',
+            'stock.integer' => 'La cantidad debe ser un número entero.',
+            'stock.min' => 'La cantidad no puede ser negativa.',
         ]);
 
-        Book::create($request->all());
+        $book = Book::create($request->all());
+
+        if (Auth::user()->role !== 'coordinator') {
+            $coordinators = User::query()->where('role', '=', 'coordinator', 'and')->get();
+            if ($coordinators->isNotEmpty()) {
+                Notification::send($coordinators, new NewBookCreated($book, Auth::user()));
+            }
+        }
 
         return redirect('/books')->with('success', 'Libro creado correctamente');
     }
@@ -97,13 +126,32 @@ class BookController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'publisher' => 'required',
-            'published_year' => 'required|numeric',
-            'category' => 'required',
-            'stock' => 'required|numeric|min:0',
+            'title' => 'required|string|min:4|max:255',
+            'author' => 'required|string|min:4|max:255',
+            'publisher' => 'required|string|min:4|max:255',
+            'published_year' => 'required|integer|digits:4',
+            'category' => 'required|string|min:4|max:255',
+            'stock' => 'required|integer|min:0',
             'is_active' => 'nullable|boolean',
+        ], [
+            'title.required' => 'El título es obligatorio.',
+            'title.string' => 'El título debe ser texto.',
+            'title.min' => 'El título debe tener al menos 4 caracteres.',
+            'author.required' => 'El autor es obligatorio.',
+            'author.string' => 'El autor debe ser texto.',
+            'author.min' => 'El nombre del autor debe tener al menos 4 caracteres.',
+            'publisher.required' => 'La editorial es obligatoria.',
+            'publisher.string' => 'La editorial debe ser texto.',
+            'publisher.min' => 'La editorial debe tener al menos 4 caracteres.',
+            'published_year.required' => 'El año de publicación es obligatorio.',
+            'published_year.integer' => 'El año debe ser un número entero.',
+            'published_year.digits' => 'El año debe tener 4 dígitos.',
+            'category.required' => 'La categoría es obligatoria.',
+            'category.string' => 'La categoría debe ser texto.',
+            'category.min' => 'La categoría debe tener al menos 4 caracteres.',
+            'stock.required' => 'La cantidad disponible es obligatoria.',
+            'stock.integer' => 'La cantidad debe ser un número entero.',
+            'stock.min' => 'La cantidad no puede ser negativa.',
         ]);
 
         $book = Book::findOrFail($id);

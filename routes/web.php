@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::get('/students', [UserController::class, 'index'])->name('students.index'
 Route::get('/students/create', [UserController::class, 'create'])->name('students.create');
 Route::post('/students', [UserController::class, 'store'])->name('students.store');
 Route::post('/students/{id}/toggle', [UserController::class, 'toggle'])->name('students.toggle');
+
+// Notificaciones
+Route::middleware('auth')->post('/notifications/{notificationId}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');

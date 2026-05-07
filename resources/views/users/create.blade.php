@@ -23,7 +23,7 @@
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Nombre Completo</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" minlength="4" maxlength="255" required>
                     </div>
 
                     <div class="mb-3">
