@@ -1,12 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card shadow">
+<div class="card card-custom shadow">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="m-0 font-weight-bold text-primary">Catálogo de Libros</h5>
-        <a href="{{ route('books.create') }}" class="btn btn-success btn-sm">
-            <i class="bi bi-plus-circle"></i> Registrar Nuevo Libro
-        </a>
+        <div>
+            <h5 class="m-0 font-weight-bold text-primary">Catálogo de Libros</h5>
+            @if(auth()->check() && auth()->user()->role !== 'coordinator')
+                <small class="text-muted">Puedes editar e inactivar libros.</small>
+            @endif
+        </div>
+        @if(auth()->check() && auth()->user()->role === 'coordinator')
+            <a href="{{ route('books.create') }}" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Registrar Nuevo Libro
+            </a>
+        @endif
     </div>
     <div class="card-body">
         <form action="{{ route('books.index') }}" method="GET" class="mb-4">
@@ -26,7 +33,7 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-custom table-hover align-middle">
                 <thead class="table-light">
                     <tr>
                         <th>ID</th>
@@ -54,18 +61,22 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a href="{{ route('books.edit', $book->id) }}" class="btn btn-outline-warning btn-sm">
+                            @if(auth()->check())
+                            <div class="btn-group" role="group" style="gap: 5px;">
+                                <a href="{{ route('books.edit', $book->id) }}" class="btn btn-custom-edit btn-sm">
                                     <i class="bi bi-pencil"></i> Editar
                                 </a>
-                                <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('¿Inactivar este libro?')">
+                                <form action="{{ route('books.destroy', $book->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <button type="submit" class="btn btn-custom-delete btn-sm" onclick="return confirm('¿Inactivar este libro?')">
                                         <i class="bi bi-trash"></i> Inactivar
                                     </button>
                                 </form>
                             </div>
+                        @else
+                            <span class="text-muted">Sin acciones</span>
+                        @endif
                         </td>
                     </tr>
                     @empty
@@ -75,6 +86,13 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Paginación compacta -->
+        <div class="pagination-container-compact">
+            <div class="pagination-wrapper-compact">
+                {{ $books->links('vendor.pagination.bootstrap-5') }}
+            </div>
         </div>
     </div>
 </div>

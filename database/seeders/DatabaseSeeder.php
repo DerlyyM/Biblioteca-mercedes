@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             BookSeeder::class,
+            StudentSeeder::class,
         ]);
 
         // Crear un usuario de prueba adicional si es necesario

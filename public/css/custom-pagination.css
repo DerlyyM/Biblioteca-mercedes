@@ -1,0 +1,202 @@
+/* Estilos personalizados para paginación de biblioteca */
+.custom-pagination {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: 12px;
+    padding: 6px 8px;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    border: 2px solid #17a2b8;
+    margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+}
+
+.custom-pagination .page-link {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 6px !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.custom-pagination .page-link:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background: linear-gradient(45deg, #007bff, #6610f2) !important;
+    border-color: #007bff !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4) !important;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    cursor: not-allowed !important;
+}
+
+.custom-pagination .page-link:focus {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
+    outline: none !important;
+}
+
+/* Contenedor de paginación compacta */
+.pagination-container-compact {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.pagination-wrapper-compact {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px 0;
+}
+
+/* Estilos para botones de acción */
+.btn-custom-edit {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+    border: none;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+    margin-right: 3px;
+}
+
+.btn-custom-edit:hover {
+    background: linear-gradient(45deg, #e0a800, #e8590c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    color: #ffffff;
+}
+
+.btn-custom-delete {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border: none;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+}
+
+.btn-custom-delete:hover {
+    background: linear-gradient(45deg, #bd2130, #a02622);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    color: #ffffff;
+}
+
+.btn-custom-toggle {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    border: none;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
+}
+
+.btn-custom-toggle:hover {
+    background: linear-gradient(45deg, #545b62, #343a40);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+    color: #ffffff;
+}
+
+/* Estilos para la tabla */
+.table-custom {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.table-custom thead th {
+    background: linear-gradient(45deg, #007bff, #6610f2);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px;
+}
+
+.table-custom tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table-custom tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: scale(1.01);
+}
+
+.table-custom tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Fondo verde para el body */
+body {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%) !important;
+}
+
+/* Estilos para el navbar */
+.navbar-custom {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+}
+
+/* Estilos para las tarjetas */
+.card-custom {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Estilos para badges */
+.badge-custom-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+    color: #ffffff !important;
+}
+
+.badge-custom-secondary {
+    background: linear-gradient(45deg, #6c757d, #495057) !important;
+    color: #ffffff !important;
+}
+
+.badge-custom-info {
+    background: linear-gradient(45deg, #17a2b8, #138496) !important;
+    color: #ffffff !important;
+}

@@ -17,12 +17,24 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Crear 10 usuarios aleatorios
+        // Crear coordinadora con acceso administrativo
+        User::create([
+            'name' => 'Coordinadora Mercedes',
+            'email' => 'coordinadora@example.com',
+            'password' => Hash::make('coordinadora123'),
+            'role' => 'coordinator',
+            'is_active' => true,
+            'email_verified_at' => now(),
+        ]);
+
+        // Crear 10 estudiantes aleatorios
         for ($i = 0; $i < 10; $i++) {
             User::create([
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'password' => Hash::make('password'), // Contraseña por defecto
+                'role' => 'student',
+                'is_active' => $faker->boolean(80),
                 'email_verified_at' => now(),
             ]);
         }

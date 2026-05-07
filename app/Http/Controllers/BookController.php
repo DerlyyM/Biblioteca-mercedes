@@ -4,41 +4,72 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (! Auth::check()) {
+                return redirect()->route('login');
+            }
+
+            return $next($request);
+        });
+    }
+
+    private function requireCoordinator()
+    {
+        if (Auth::user()->role !== 'coordinator') {
+            abort(403, 'Acceso no autorizado.');
+        }
+    }
+
     /**
-     * Display a listing of the resource.
+     * Mostrar un listado del recurso.
      */
     public function index(Request $request)
     {
-         // Capturamos lo que el usuario escribe en el buscador
         $search = $request->input('search');
 
-        // Buscamos libros por Título, Autor o Categoría (Requerimiento #5)
-        $books = Book::where('title', 'LIKE', "%{$search}%")
-                    ->orWhere('author', 'LIKE', "%{$search}%")
-                    ->orWhere('category', 'LIKE', "%{$search}%")
-                    ->get();
+        $query = Book::query();
+
+        if (Auth::user()->role !== 'coordinator') {
+            $query->where('is_active', true);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('author', 'LIKE', "%{$search}%")
+                  ->orWhere('category', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $books = $query->paginate(5);
 
         return view('books.index', compact('books'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo recurso.
      */
     public function create()
     {
+        $this->requireCoordinator();
+
         return view('books.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un recurso recién creado en el almacenamiento.
      */
     public function store(Request $request)
     {
-            // Validaciones del SENA
+        $this->requireCoordinator();
+
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -48,14 +79,13 @@ class BookController extends Controller
             'stock' => 'required|numeric|min:0',
         ]);
 
-        // Crear el registro en la base de datos
         Book::create($request->all());
 
         return redirect('/books')->with('success', 'Libro creado correctamente');
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar el recurso especificado.
      */
     public function show(string $id)
     {
@@ -63,22 +93,20 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar el recurso especificado.
      */
     public function edit(string $id)
     {
-        // Buscamos el libro por su ID, si no existe lanza error 404
         $book = Book::findOrFail($id);
-        
+
         return view('books.edit', compact('book'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el recurso especificado en el almacenamiento.
      */
     public function update(Request $request, string $id)
     {
-        // Validamos nuevamente para cumplir requerimientos del SENA
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -86,24 +114,21 @@ class BookController extends Controller
             'published_year' => 'required|numeric',
             'category' => 'required',
             'stock' => 'required|numeric|min:0',
+            'is_active' => 'nullable|boolean',
         ]);
 
         $book = Book::findOrFail($id);
-        
-        // Actualizamos todos los campos enviados
         $book->update($request->all());
 
         return redirect()->route('books.index')->with('success', 'Libro actualizado correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimine el recurso especificado del almacenamiento.
      */
     public function destroy(string $id)
     {
         $book = Book::findOrFail($id);
-        
-        // Cambiamos el estado a Inactivo (false) en lugar de borrarlo
         $book->update(['is_active' => false]);
 
         return redirect()->route('books.index')->with('success', 'El libro ha sido inactivado correctamente.');
