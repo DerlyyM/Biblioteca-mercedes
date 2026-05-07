@@ -5,15 +5,15 @@
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <div>
             <h5 class="m-0 font-weight-bold text-primary">Catálogo de Libros</h5>
-            @if(auth()->check() && auth()->user()->role !== 'coordinator')
-                <small class="text-muted">Puedes editar e inactivar libros.</small>
-            @endif
+            @auth
+                <small class="text-muted">Puedes registrar, editar e inactivar libros.</small>
+            @endauth
         </div>
-        @if(auth()->check() && auth()->user()->role === 'coordinator')
+        @auth
             <a href="{{ route('books.create') }}" class="btn btn-success btn-sm">
                 <i class="bi bi-plus-circle"></i> Registrar Nuevo Libro
             </a>
-        @endif
+        @endauth
     </div>
     <div class="card-body">
         <form action="{{ route('books.index') }}" method="GET" class="mb-4">

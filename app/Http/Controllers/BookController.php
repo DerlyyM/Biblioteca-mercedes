@@ -20,13 +20,6 @@ class BookController extends Controller
         });
     }
 
-    private function requireCoordinator()
-    {
-        if (Auth::user()->role !== 'coordinator') {
-            abort(403, 'Acceso no autorizado.');
-        }
-    }
-
     /**
      * Mostrar un listado del recurso.
      */
@@ -58,8 +51,6 @@ class BookController extends Controller
      */
     public function create()
     {
-        $this->requireCoordinator();
-
         return view('books.create');
     }
 
@@ -68,8 +59,6 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $this->requireCoordinator();
-
         $request->validate([
             'title' => 'required',
             'author' => 'required',

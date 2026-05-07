@@ -12,6 +12,21 @@
         </div>
     </div>
     <div class="card-body">
+        <form action="{{ route('students.index') }}" method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por ID o nombre..." value="{{ request('search') }}">
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+        </form>
+
+        @if($search)
+            <div class="alert alert-info" role="alert">
+                Resultados de búsqueda para: <strong>{{ $search }}</strong>
+            </div>
+        @endif
+
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}

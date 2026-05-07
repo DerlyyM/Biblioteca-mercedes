@@ -25,11 +25,25 @@ class UserController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $students = User::where('role', '=', 'student', 'and')->orderBy('name')->paginate(5);
+        $search = $request->input('search');
 
-        return view('users.index', compact('students'));
+        $students = User::where('role', '=', 'student', 'and');
+
+        if ($search) {
+            $students->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+
+                if (is_numeric($search)) {
+                    $query->orWhere('id', $search);
+                }
+            });
+        }
+
+        $students = $students->orderBy('id')->paginate(5)->appends(['search' => $search]);
+
+        return view('users.index', compact('students', 'search'));
     }
 
     public function create()
