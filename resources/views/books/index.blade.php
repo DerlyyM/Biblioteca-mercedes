@@ -37,6 +37,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>ID</th>
+                        <th>ISBN</th>
                         <th>Título</th>
                         <th>Autor</th>
                         <th>Categoría</th>
@@ -49,6 +50,7 @@
                     @forelse($books as $book)
                     <tr>
                         <td>{{ $book->id }}</td>
+                        <td>{{ $book->isbn ?? '-' }}</td>
                         <td><strong>{{ $book->title }}</strong></td>
                         <td>{{ $book->author }}</td>
                         <td><span class="badge bg-info text-dark">{{ $book->category }}</span></td>

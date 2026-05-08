@@ -42,9 +42,14 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Cantidad (Stock)</label>
-                            <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}" min="0" step="1" required>
+                            <input type="text" name="stock" class="form-control" value="{{ old('stock', 0) }}" min="0" step="1" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ISBN</label>
+                            <input type="text" name="isbn" class="form-control" value="{{ old('isbn') }}" maxlength="20" placeholder="ej: 978-3-16-148410-0" required>
                         </div>
                     </div>
+
                     <div class="mt-4 border-top pt-3">
                         <button type="submit" class="btn btn-primary">Guardar Libro</button>
                         <a href="{{ route('books.index') }}" class="btn btn-light">Cancelar</a>

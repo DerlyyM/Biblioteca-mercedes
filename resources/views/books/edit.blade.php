@@ -59,6 +59,11 @@
                         </div>
 
                         <div class="col-md-6">
+                            <label for="isbn" class="form-label fw-bold">ISBN</label>
+                            <input type="text" name="isbn" id="isbn" class="form-control" value="{{ old('isbn', $book->isbn) }}" maxlength="20" placeholder="ej: 978-3-16-148410-0" required>
+                        </div>
+
+                        <div class="col-md-6">
                             <label for="is_active" class="form-label fw-bold">Estado del Libro</label>
                             <select name="is_active" id="is_active" class="form-select">
                                 <option value="1" {{ old('is_active', $book->is_active) == 1 ? 'selected' : '' }}>Activo</option>

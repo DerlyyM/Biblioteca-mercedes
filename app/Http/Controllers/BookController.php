@@ -62,13 +62,14 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|min:4|max:255',
             'author' => 'required|string|min:4|max:255',
             'publisher' => 'required|string|min:4|max:255',
             'published_year' => 'required|integer|digits:4',
             'category' => 'required|string|min:4|max:255',
             'stock' => 'required|integer|min:0',
+            'isbn' => 'required|string|max:20',
         ], [
             'title.required' => 'El título es obligatorio.',
             'title.string' => 'El título debe ser texto.',
@@ -88,12 +89,15 @@ class BookController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'stock.integer' => 'La cantidad debe ser un número entero.',
             'stock.min' => 'La cantidad no puede ser negativa.',
+            'isbn.required' => 'El ISBN es obligatorio.',
+            'isbn.string' => 'El ISBN debe ser texto.',
+            'isbn.max' => 'El ISBN no puede exceder 20 caracteres.',
         ]);
 
-        $book = Book::create($request->all());
+        $book = Book::create($validated);
 
         if (Auth::user()->role !== 'coordinator') {
-            $coordinators = User::query()->where('role', '=', 'coordinator', 'and')->get();
+            $coordinators = User::query()->where('role', 'coordinator')->get();
             if ($coordinators->isNotEmpty()) {
                 Notification::send($coordinators, new NewBookCreated($book, Auth::user()));
             }
@@ -125,13 +129,14 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|min:4|max:255',
             'author' => 'required|string|min:4|max:255',
             'publisher' => 'required|string|min:4|max:255',
             'published_year' => 'required|integer|digits:4',
             'category' => 'required|string|min:4|max:255',
             'stock' => 'required|integer|min:0',
+            'isbn' => 'required|string|max:20',
             'is_active' => 'nullable|boolean',
         ], [
             'title.required' => 'El título es obligatorio.',
@@ -152,10 +157,13 @@ class BookController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'stock.integer' => 'La cantidad debe ser un número entero.',
             'stock.min' => 'La cantidad no puede ser negativa.',
+            'isbn.required' => 'El ISBN es obligatorio.',
+            'isbn.string' => 'El ISBN debe ser texto.',
+            'isbn.max' => 'El ISBN no puede exceder 20 caracteres.',
         ]);
 
         $book = Book::findOrFail($id);
-        $book->update($request->all());
+        $book->update($validated);
 
         return redirect()->route('books.index')->with('success', 'Libro actualizado correctamente.');
     }
